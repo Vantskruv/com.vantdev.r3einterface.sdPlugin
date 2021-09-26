@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\FR3E_SD_Plugin.cpp" />
+    <ClCompile Include="FKeyCommand.cpp" />
+    <ClCompile Include="FR3EData.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="..\Common\ESDConnectionManager.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\ESDLocalizer.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\ESDUtilitiesWindows.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\main.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\FR3E_SD_Plugin.h" />
+    <ClInclude Include="FKeyCommand.h" />
+    <ClInclude Include="FR3EData.h" />
+    <ClInclude Include="r3e.h" />
+    <ClInclude Include="..\Common\EPLJSONUtils.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\ESDBasePlugin.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\ESDConnectionManager.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\ESDLocalizer.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\ESDSDKDefines.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\ESDUtilities.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="js">
+      <UniqueIdentifier>{4120d273-a754-4436-b879-6674c1b5eae5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="html">
+      <UniqueIdentifier>{d7af9bfe-b2e5-4ee1-b8b8-9be800979c30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{1cfaf915-11c5-427f-94a7-eec3bd882170}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
