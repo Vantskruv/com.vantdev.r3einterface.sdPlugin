@@ -187,31 +187,31 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\ESDConnectionManager.cpp">
-	  <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ClCompile Include="Common\ESDLocalizer.cpp">
-	  <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ClCompile Include="Common\ESDUtilitiesWindows.cpp">
-	  <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ClCompile Include="Common\main.cpp">
-	  <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ClCompile Include="FR3E_SD_Plugin.cpp">
-	  <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
@@ -223,17 +223,25 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="r3esd_src\FKeyCommand.cpp">
-	  <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ClCompile Include="r3esd_src\FR3EData.cpp">
-	  <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="com.vantdev.r3einterface.sdPlugin\propertyinspector\js\common.js" />
+    <None Include="com.vantdev.r3einterface.sdPlugin\propertyinspector\js\common_pi.js" />
+    <None Include="com.vantdev.r3einterface.sdPlugin\propertyinspector\js\custom_functions.js" />
+    <None Include="com.vantdev.r3einterface.sdPlugin\propertyinspector\js\r3esd_index.js" />
+    <None Include="com.vantdev.r3einterface.sdPlugin\propertyinspector\requestboxbutton.html" />
+    <None Include="com.vantdev.r3einterface.sdPlugin\propertyinspector\toggleboxoptionbutton.html" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
