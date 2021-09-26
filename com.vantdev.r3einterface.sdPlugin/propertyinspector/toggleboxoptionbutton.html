@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>com.vantdev.r3esd.uitoggleboxoptionbutton</title>
+    <link rel="stylesheet" href="css/sdpi.css" />
+</head>
+
+<body>
+    <div class="sdpi-wrapper">
+        <!-- DROP HTML-STUFF BELOW -->
+        <!--
+          Here we just copied a couple of elements from the PISamples example, which contains
+          a huge collection pre-made HTML-elements for you to use.
+          Important here is (if you plan to communicate from the Property Inspector to the plugin without
+          further programming), that you add an 'id' to an element's control.
+          This will get the 'key', which is sent to the plugin (or settings), along with the value of
+          the control.
+        -->
+        <!--
+        <div id="description_id">
+            Toggles a selected pit-stop option.
+            <br>
+        </div>
+            -->
+        <div class="sdpi-item" id="table_toggle_box_option">
+            <table class="sdpi-item-value single-select" width="100%">
+                <col style="width:25%" span="4" />
+                <tr>
+                    <td class="no-select"><strong>Tires</strong></td>
+                    <td class="no-select"><strong>Fix</strong></td>
+                    <td class="no-select"><strong>Refuel</strong></td>
+                    <td class="no-select"><strong>Driver</strong></td>
+                </tr>
+                <tr>
+                    <td data-index=3>Front</td>
+                    <td data-index=5>Body</td>
+                    <td data-index=9>Safe</td>
+                    <td data-index=1>Penalty</td>
+                </tr>
+                <tr>
+                    <td data-index=4>Rear</td>
+                    <td data-index=6>Front</td>
+                    <td data-index=10>Normal</td>
+                    <td data-index=2>Change</td>
+                </tr>
+                <tr>
+                    <td class="no-select"></td>
+                    <td data-index=7>Rear</td>
+                    <td data-index=11>Risky</td>
+                    <td class="no-select"></td>
+                </tr>
+                <tr>
+                    <td class="no-select"></td>
+                    <td data-index=8>Susp</td>
+                    <td data-index=12>Calc</td>
+                    <td class="no-select"></td>
+                </tr>
+            </table>
+        </div>
+        <!-- END OF SDPI-WRAPPER -->
+    </div>
+
+
+    <script src="js/common.js"></script>
+    <script src="js/common_pi.js"></script>
+    <script src="js/r3esd_index.js"></script>
+    <script src="js/custom_functions.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,62 @@
+{
+  "Actions": [
+    {
+      "Icon": "GREEN",
+      "Name": "Toggle Box Option Button",
+      "States": [
+        {
+          "Image": "YELLOW_FAINT",
+          "TitleAlignment": "middle",
+          "FontSize": "17"
+        },
+        {
+          "Image": "GREEN",
+          "TitleAlignment": "middle",
+          "FontSize": "17"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Toggle chosen box option on/off",
+      "UUID": "com.vantdev.r3sd.toggleboxoptionbutton",
+      "PropertyInspectorPath": "propertyinspector/toggleboxoptionbutton.html"
+    },
+    {
+      "Icon": "RED_DOUBLE",
+      "Name": "Request Box",
+      "States": [
+        {
+          "Image": "RED_DOUBLE",
+          "TitleAlignment": "middle",
+          "FontSize": "17"
+        },
+        {
+          "Image": "YELLOW_BLINK",
+          "TitleAlignment": "middle",
+          "FontSize": "17"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Request Box with optional enforced box options",
+      "UUID": "com.vantdev.r3sd.requestboxbutton",
+      "PropertyInspectorPath": "propertyinspector/requestboxbutton.html"
+    }
+  ], 
+  "SDKVersion": 2,
+  "Author": "Johannes Bergmark", 
+  "CodePath": "r3e_sd.exe", 
+  "Description": "Communicate with RaceRoom (R3E)",
+  "Name": "Raceroom Interface", 
+  "Category":  "Raceroom Interface",
+  "Icon": "R3E", 
+  "Version": "1.0",
+  "OS": [
+    {
+        "Platform": "windows", 
+        "MinimumVersion" : "10"
+    }
+  ],
+  "Software": 
+    {
+        "MinimumVersion" : "4.1"
+    }
+}

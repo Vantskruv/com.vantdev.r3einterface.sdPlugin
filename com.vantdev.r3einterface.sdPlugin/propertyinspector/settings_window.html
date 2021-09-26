@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<!--
+<script src="js/common.js"></script>
+<script src="js/common_pi.js"></script>
+<script src="js/r3esd_toggle.js"></script>
+-->
+<script>
+	function openSettingsWindowsButtonPress() {
+		if (!window.uisettingswindow || window.uisettingswindow.closed) {
+			window.uisettingswindow = window.open('settings_window.html', 'Global Settings');
+		}
+	}
+
+	function updateGlobalSettings() {
+
+	}
+</script>
+
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<title>com.vantdev.r3esd.uisettingswindow</title>
+	<link rel="stylesheet" href="css/sdpi.css" />
+	<style>
+		body {
+			background-color: transparent;
+		}
+
+		.sdpi-item {
+			max-width: none !important;
+		}
+
+		.sdpi-heading {
+			margin: 16px 0;
+		}
+
+		ul {
+			max-height: none;
+		}
+
+		li * {
+			min-height: 18px;
+			padding: 4px;
+			display: flex;
+			align-items: center;
+		}
+
+		.wrap {
+			margin: 0 auto;
+			max-width: 600px;
+		}
+
+		.title {
+			font-weight: bold;
+			padding-bottom: 2px;
+			margin-bottom: 6px;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+			text-transform: uppercase;
+		}
+
+		.wrap {
+			text-align: center;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div class="sdpi-wrapper">
+		<div id="connection_settings_div">
+			<div class="sdpi-heading">R3E_SD Global Settings</div>
+			<div class="wrap">
+				<p>
+					The Raceroom executable name (for those who run 32 or 64 bit), time between key-presses,
+					and pit-menu keyboards keys can be setup here.
+				</p>
+
+			</div>
+
+			<div class="wrap" style="max-width: 350px;">
+				<div class="sdpi-item">
+					<div class="sdpi-item-label">R3E executable name</div>
+					<input class="sdpi-item-value" id="r3e_executable" value="RRRE64.exe" placeholder="Default: RRRE64.exe">
+				</div>
+
+				<div class="sdpi-item">
+					<div class="sdpi-item-label">Time between each keypress (ms)</div>
+					<input id="waitBetweenEachCommand" class="sdpi-item-value" type="text" value="200"
+						   placeholder="Default: 200" />
+				</div>
+
+				<div class="sdpi-item">
+					<div class="sdpi-item-label">Time between each keypress for fuel (ms)</div>
+					<input id="waitBetweenEachFuelStep" class="sdpi-item-value" type="text" value="20"
+						   placeholder="Default: 20" />
+				</div>
+
+				<div class="sdpi-item">
+					<div class="sdpi-item-label">Holdtime for each keypress (ms)</div>
+					<input id="holdTimeMillisKeyPress" class="sdpi-item-value" type="text" value="10"
+						   placeholder="Default: 10" />
+				</div>
+
+				<button id="update_settings_button" type="button" value="Update Settings"
+						onclick="updateGlobalSettings()">
+					Update Settings
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<!--<script src="js/comms_window_functions.js"></script>-->
+
+</body>
+
+</html>

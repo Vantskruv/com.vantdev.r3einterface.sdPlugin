@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "FKeyCommand.h"
 
 std::tuple<unsigned short, bool>* FKeyCommand::keyBeingPressed = nullptr;
