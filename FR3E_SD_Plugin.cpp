@@ -3,8 +3,8 @@
 #include "Common/ESDConnectionManager.h"
 #include "Common/EPLJSONUtils.h"
 
-#include "FKeyCommand.h"
-#include "FR3EData.h"
+#include "r3esd_src/FKeyCommand.h"
+#include "r3esd_src/FR3EData.h"
 
 #include <atomic>
 #include <thread>
@@ -15,7 +15,14 @@
 
 FR3E_SD_Plugin::FR3E_SD_Plugin()
 {
-	r3e_data = new FR3EData();
+	try
+	{
+		r3e_data = new FR3EData();
+	}
+	catch (...)
+	{
+		r3e_data = nullptr;
+	}
 }
 
 FR3E_SD_Plugin::~FR3E_SD_Plugin()
@@ -23,13 +30,14 @@ FR3E_SD_Plugin::~FR3E_SD_Plugin()
 	bRunBlink = false;
 	if(tBlinkContext.joinable()) tBlinkContext.join();
 	
-	delete r3e_data;
+	if(r3e_data) delete r3e_data;
 }
 
 void FR3E_SD_Plugin::thread_blinkContext()
 {
 	bool bBlink = true;
-	while (r3e_data->isPitOptionsRunning() && bRunBlink)
+
+	if(r3e_data) while (r3e_data->isPitOptionsRunning() && bRunBlink)
 	{
 		mCurrentInContext.lock();
 		mConnectionManager->SetState(bBlink, currentInContext);
@@ -58,7 +66,7 @@ void FR3E_SD_Plugin::KeyUpForAction(const std::string& inAction, const std::stri
 		EPLJSONUtils::GetObjectByName(inPayload, "settings", settings);
 		int boxOption = EPLJSONUtils::GetIntByName(settings, "box_option", 0);
 		mConnectionManager->LogMessage("KeyUpForAction: " + std::to_string(boxOption));
-
+		
 		mVisibleToggleButtonsMutex.lock();
 		// Toggle the option
 		toggleOption(boxOption);
@@ -82,6 +90,7 @@ void FR3E_SD_Plugin::KeyUpForAction(const std::string& inAction, const std::stri
 	}
 	else if (inAction.compare("com.vantdev.r3sd.requestboxbutton") == 0) // If a requestboxbutton has been released.
 	{
+		if (!r3e_data) return;
 		// Retrieve the box-options set in requestboxbutton
 		json settings;
 		EPLJSONUtils::GetObjectByName(inPayload, "settings", settings);
@@ -264,6 +273,7 @@ void FR3E_SD_Plugin::WillDisappearForAction(const std::string& inAction, const s
 void FR3E_SD_Plugin::DeviceDidConnect(const std::string& inDeviceID, const json &inDeviceInfo)
 {
 	mConnectionManager->LogMessage("DeviceDidConnect recieved data");
+	mConnectionManager->GetGlobalSettings();
 	// Nothing to do
 }
 
@@ -275,8 +285,12 @@ void FR3E_SD_Plugin::DeviceDidDisconnect(const std::string& inDeviceID)
 
 void FR3E_SD_Plugin::SendToPlugin(const std::string& inAction, const std::string& inContext, const json &inPayload, const std::string& inDeviceID)
 {
-	std::string sData = "SendToPlugin recieved data";
-	mConnectionManager->LogMessage(sData);
+	mConnectionManager->LogMessage("SendToPlugin recieved data");
+}
+
+void FR3E_SD_Plugin::DidReceiveSettings(const std::string& inAction, const std::string& inContext, const json& inPayload,	const std::string& inDeviceID)
+{
+	mConnectionManager->LogMessage("DidReceiveSettings recieved data");
 
 	if (inAction.compare("com.vantdev.r3sd.toggleboxoptionbutton") == 0)
 	{
@@ -294,18 +308,18 @@ void FR3E_SD_Plugin::SendToPlugin(const std::string& inAction, const std::string
 		}
 
 		int cBoxOption = foundContext->second;
-			
+
 		// Search for other buttons with the same option this button currently has.
 		bool bIsFound = false;
 		for (auto iContext : mVisibleToggleButtons)
 		{
-			if (iContext.second == cBoxOption && iContext.first.compare(inContext)!=0)
+			if (iContext.second == cBoxOption && iContext.first.compare(inContext) != 0)
 			{
 				bIsFound = true;
 				break;
 			}
 		}
-		
+
 		// If no button is found, and the option is set to true, set it to false.
 		if (!bIsFound)
 		{
@@ -329,11 +343,30 @@ void FR3E_SD_Plugin::SendToPlugin(const std::string& inAction, const std::string
 		else mConnectionManager->SetState(0, inContext);
 		mVisibleToggleButtonsMutex.unlock();
 	}
-
-	
 }
 
-void FR3E_SD_Plugin::DidReceiveSettings( const std::string& inAction, const std::string& inContext, const json& inPayload,	const std::string& inDeviceID)
+void FR3E_SD_Plugin::DidReceiveGlobalSettings(const json& inPayload)
 {
-	mConnectionManager->LogMessage("DidReceiveSettings recieved data");
+	mConnectionManager->LogMessage("DidReceiveGlobalSettings recieved data");
+	if (!r3e_data) return;
+
+	json settings;
+	if (!EPLJSONUtils::GetObjectByName(inPayload, "settings", settings)) return;
+
+	int pitMenuUp = EPLJSONUtils::GetIntByName(settings, "pit_menu_up_key", -1);
+	int pitMenuDown = EPLJSONUtils::GetIntByName(settings, "pit_menu_down_key", -1);
+	int pitMenuLeft = EPLJSONUtils::GetIntByName(settings, "pit_menu_left_key", -1);
+	int pitMenuRight = EPLJSONUtils::GetIntByName(settings, "pit_menu_right_key", -1);
+	int pitMenuEnter = EPLJSONUtils::GetIntByName(settings, "pit_menu_enter_key", -1);
+	int pitMenuBox = EPLJSONUtils::GetIntByName(settings, "pit_request_box_key", -1);
+	int pitMenuToggle = EPLJSONUtils::GetIntByName(settings, "pit_toggle_menu_key", -1);
+
+
+	if (pitMenuUp > 0) r3e_data->PIT_MENU_UP = pitMenuUp;
+	if (pitMenuDown > 0) r3e_data->PIT_MENU_DOWN = pitMenuDown;
+	if (pitMenuLeft > 0) r3e_data->PIT_MENU_LEFT = pitMenuLeft;
+	if (pitMenuRight > 0) r3e_data->PIT_MENU_RIGHT = pitMenuRight;
+	if (pitMenuEnter > 0) r3e_data->PIT_MENU_ENTER = pitMenuEnter;
+	if (pitMenuBox > 0) r3e_data->PIT_REQUEST_BOX = pitMenuBox;
+	if (pitMenuToggle > 0) r3e_data->PIT_TOGGLE_MENU = pitMenuToggle;
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -222,12 +222,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="r3esd_src\FKeyCommand.cpp">
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
-    </ClCompile>
     <ClCompile Include="r3esd_src\FR3EData.cpp">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">/FI"pch.h" %(AdditionalOptions)</AdditionalOptions>
@@ -241,7 +235,9 @@
     <None Include="com.vantdev.r3einterface.sdPlugin\propertyinspector\js\common_pi.js" />
     <None Include="com.vantdev.r3einterface.sdPlugin\propertyinspector\js\custom_functions.js" />
     <None Include="com.vantdev.r3einterface.sdPlugin\propertyinspector\js\r3esd_index.js" />
+    <None Include="com.vantdev.r3einterface.sdPlugin\propertyinspector\js\settings_window.js" />
     <None Include="com.vantdev.r3einterface.sdPlugin\propertyinspector\requestboxbutton.html" />
+    <None Include="com.vantdev.r3einterface.sdPlugin\propertyinspector\settings_window.html" />
     <None Include="com.vantdev.r3einterface.sdPlugin\propertyinspector\toggleboxoptionbutton.html" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

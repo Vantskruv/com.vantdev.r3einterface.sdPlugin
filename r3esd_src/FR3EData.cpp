@@ -8,7 +8,6 @@
 #include <iomanip>
 
 
-
 FR3EData::FR3EData()
 {
     hStopEvent = CreateEvent(nullptr, true, false, nullptr);
@@ -25,6 +24,7 @@ FR3EData::~FR3EData()
     CloseHandle(hStopEvent);
     mR3EMemory.unlock();
 }
+
 
 // Closes current open data and threads, and tries to find R3E process.
 // If found, it allocates shared memory, and starts threads.
@@ -150,7 +150,7 @@ bool FR3EData::setPitOption(int selection, bool bOn, int refuel_option)
     {
         // Go down until option is marked
         if (abortOnGoingPitOptions) return true;
-        FKeyCommand::SendScanCodeKeyPress(FKeyCommand::KeyCode::KEY_S, holdTimeMillisKeyPress);
+        FKeyCommand::SendScanCodeKeyPress(PIT_MENU_DOWN, holdTimeMillisKeyPress);
         std::this_thread::sleep_for(std::chrono::milliseconds(waitBetweenEachCommands));
         if (pSelection == r3eSharedData->pit_menu_selection)
         {
@@ -165,7 +165,7 @@ bool FR3EData::setPitOption(int selection, bool bOn, int refuel_option)
     {
         // Go up until option is marked
         if (abortOnGoingPitOptions) return true;
-        FKeyCommand::SendScanCodeKeyPress(FKeyCommand::KeyCode::KEY_W, holdTimeMillisKeyPress);
+        FKeyCommand::SendScanCodeKeyPress(PIT_MENU_UP, holdTimeMillisKeyPress);
         std::this_thread::sleep_for(std::chrono::milliseconds(waitBetweenEachCommands));
         if (pSelection == r3eSharedData->pit_menu_selection)
         {
@@ -184,7 +184,7 @@ bool FR3EData::setPitOption(int selection, bool bOn, int refuel_option)
     {
         if (r3eSharedData->pit_menu_state[selection] == 1)
         {
-            FKeyCommand::SendScanCodeKeyPress(FKeyCommand::KeyCode::KEY_E, holdTimeMillisKeyPress);
+            FKeyCommand::SendScanCodeKeyPress(PIT_MENU_ENTER, holdTimeMillisKeyPress);
             std::this_thread::sleep_for(std::chrono::milliseconds(waitBetweenEachCommands));
         }
 
@@ -196,7 +196,7 @@ bool FR3EData::setPitOption(int selection, bool bOn, int refuel_option)
         {
             if (r3eSharedData->pit_menu_state[selection] == -1) return false;
             if (abortOnGoingPitOptions) return true;
-            FKeyCommand::SendScanCodeKeyPress(FKeyCommand::KeyCode::KEY_D, holdTimeMillisKeyPress);
+            FKeyCommand::SendScanCodeKeyPress(PIT_MENU_RIGHT, holdTimeMillisKeyPress);
             std::this_thread::sleep_for(std::chrono::milliseconds(waitBetweenEachFuelStep));
         }
 
@@ -212,7 +212,7 @@ bool FR3EData::setPitOption(int selection, bool bOn, int refuel_option)
             {
                 if (r3eSharedData->pit_menu_state[selection] == -1) return false;
                 if (abortOnGoingPitOptions) return true;
-                FKeyCommand::SendScanCodeKeyPress(FKeyCommand::KeyCode::KEY_A, holdTimeMillisKeyPress);
+                FKeyCommand::SendScanCodeKeyPress(PIT_MENU_LEFT, holdTimeMillisKeyPress);
                 std::this_thread::sleep_for(std::chrono::milliseconds(waitBetweenEachFuelStep));
             }
         }
@@ -221,14 +221,14 @@ bool FR3EData::setPitOption(int selection, bool bOn, int refuel_option)
             // If refuel safe, normal or risky
             for (int i = 0; i < refuel_option; i++)
             {
-                FKeyCommand::SendScanCodeKeyPress(FKeyCommand::KeyCode::KEY_A, holdTimeMillisKeyPress);
+                FKeyCommand::SendScanCodeKeyPress(PIT_MENU_LEFT, holdTimeMillisKeyPress);
                 std::this_thread::sleep_for(std::chrono::milliseconds(waitBetweenEachFuelStep));
             }
         }
     }
 
     // Select the option
-    FKeyCommand::SendScanCodeKeyPress(FKeyCommand::KeyCode::KEY_E, holdTimeMillisKeyPress);
+    FKeyCommand::SendScanCodeKeyPress(PIT_MENU_ENTER, holdTimeMillisKeyPress);
 
     return true;
 }
@@ -241,6 +241,27 @@ bool FR3EData::isPitOptionsRunning()
 
 bool FR3EData::setPitOptions(const std::vector<std::pair<int, bool>>& pitOptions, int refuel_option, bool bRequestBoxThisLap, bool bClosePitMenu, bool bAbortOngoingPitOptions)
 {
+    /*
+    // Test code while R3e is not running
+    FKeyCommand::SendScanCodeKeyPress(PIT_MENU_UP, holdTimeMillisKeyPress);
+    std::this_thread::sleep_for(std::chrono::milliseconds(waitBetweenEachCommands));
+    FKeyCommand::SendScanCodeKeyPress(PIT_MENU_DOWN, holdTimeMillisKeyPress);
+    std::this_thread::sleep_for(std::chrono::milliseconds(waitBetweenEachCommands));
+    FKeyCommand::SendScanCodeKeyPress(PIT_MENU_LEFT, holdTimeMillisKeyPress);
+    std::this_thread::sleep_for(std::chrono::milliseconds(waitBetweenEachCommands));
+    FKeyCommand::SendScanCodeKeyPress(PIT_MENU_RIGHT, holdTimeMillisKeyPress);
+    std::this_thread::sleep_for(std::chrono::milliseconds(waitBetweenEachCommands));
+    FKeyCommand::SendScanCodeKeyPress(PIT_MENU_ENTER, holdTimeMillisKeyPress);
+    std::this_thread::sleep_for(std::chrono::milliseconds(waitBetweenEachCommands));
+    FKeyCommand::SendScanCodeKeyPress(PIT_REQUEST_BOX, holdTimeMillisKeyPress);
+    std::this_thread::sleep_for(std::chrono::milliseconds(waitBetweenEachCommands));
+    FKeyCommand::SendScanCodeKeyPress(PIT_TOGGLE_MENU, holdTimeMillisKeyPress);
+    std::this_thread::sleep_for(std::chrono::milliseconds(waitBetweenEachCommands));
+
+    if (1 == 1) return false;
+    */
+
+
     if (!bIsR3ERunning)
     {
         std::scoped_lock<std::mutex> lock(mR3EMemory);
@@ -330,7 +351,7 @@ void FR3EData::thread_setPitOptions()
         // Enter pit-menu if we are not already there. If the attempt is unsuccessfull, we return false.
         if (r3eSharedData->pit_menu_selection == R3E_PIT_MENU_UNAVAILABLE)
         {
-            FKeyCommand::SendScanCodeKeyPress(FKeyCommand::KeyCode::KEY_Q, holdTimeMillisKeyPress);
+            FKeyCommand::SendScanCodeKeyPress(PIT_TOGGLE_MENU, holdTimeMillisKeyPress);
             std::this_thread::sleep_for(std::chrono::milliseconds(waitBetweenEachCommands));
             if (r3eSharedData->pit_menu_selection == R3E_PIT_MENU_UNAVAILABLE)
             {
@@ -363,16 +384,16 @@ void FR3EData::thread_setPitOptions()
             if (current_request_boxthislap && r3eSharedData->pit_state <1) // Request pitstop
             {
                 // Current vehicle pit state (-1 = N/A, 0 = None, 1 = Requested stop, 2 = Entered pitlane heading for pitspot, 3 = Stopped at pitspot, 4 = Exiting pitspot heading for pit exit)
-                FKeyCommand::SendScanCodeKeyPress(FKeyCommand::KeyCode::KEY_R, holdTimeMillisKeyPress);
+                FKeyCommand::SendScanCodeKeyPress(PIT_REQUEST_BOX, holdTimeMillisKeyPress);
                 std::this_thread::sleep_for(std::chrono::milliseconds(waitBetweenEachCommands));
             }
             else if (!current_request_boxthislap && r3eSharedData->pit_state == 1)  // Cancel pitstop request
             {
-                FKeyCommand::SendScanCodeKeyPress(FKeyCommand::KeyCode::KEY_R, holdTimeMillisKeyPress);
+                FKeyCommand::SendScanCodeKeyPress(PIT_REQUEST_BOX, holdTimeMillisKeyPress);
                 std::this_thread::sleep_for(std::chrono::milliseconds(waitBetweenEachCommands));
             }
             
-            if(current_close_pit_menu) FKeyCommand::SendScanCodeKeyPress(FKeyCommand::KeyCode::KEY_Q, holdTimeMillisKeyPress);
+            if(current_close_pit_menu) FKeyCommand::SendScanCodeKeyPress(PIT_TOGGLE_MENU, holdTimeMillisKeyPress);
         }
 
         currentPitOptions.clear();

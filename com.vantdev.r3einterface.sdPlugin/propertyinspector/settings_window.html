@@ -1,20 +1,4 @@
 <!DOCTYPE html>
-<!--
-<script src="js/common.js"></script>
-<script src="js/common_pi.js"></script>
-<script src="js/r3esd_toggle.js"></script>
--->
-<script>
-	function openSettingsWindowsButtonPress() {
-		if (!window.uisettingswindow || window.uisettingswindow.closed) {
-			window.uisettingswindow = window.open('settings_window.html', 'Global Settings');
-		}
-	}
-
-	function updateGlobalSettings() {
-
-	}
-</script>
 
 <html>
 
@@ -65,52 +49,96 @@
 	</style>
 </head>
 
-<body>
-
+<body onload="initializeSettingsWindow()">
 	<div class="sdpi-wrapper">
 		<div id="connection_settings_div">
 			<div class="sdpi-heading">R3E_SD Global Settings</div>
 			<div class="wrap">
 				<p>
-					The Raceroom executable name (for those who run 32 or 64 bit), time between key-presses,
-					and pit-menu keyboards keys can be setup here.
+					Settings being applied here stops any ongoing pit-stop executions.
 				</p>
-
+				<br>
 			</div>
 
 			<div class="wrap" style="max-width: 350px;">
+
+				<div class="sdpi-heading">R3E executable name</div>
 				<div class="sdpi-item">
-					<div class="sdpi-item-label">R3E executable name</div>
 					<input class="sdpi-item-value" id="r3e_executable" value="RRRE64.exe" placeholder="Default: RRRE64.exe">
 				</div>
 
+				<div class="sdpi-heading">Pit menu keys</div>
+				Keyboards differs between regions in the world. <br>
+				So special key-characters may not work as intended.
 				<div class="sdpi-item">
-					<div class="sdpi-item-label">Time between each keypress (ms)</div>
-					<input id="waitBetweenEachCommand" class="sdpi-item-value" type="text" value="200"
+					<div class="sdpi-item-label">Up</div>
+					<button class="sdpi-item-value" id="pit_menu_up_key" onclick="onButtonInputClick(this)" name="pit_menu_key_button">N/A</button>
+				</div>
+				<div class="sdpi-item">
+					<div class="sdpi-item-label">Down</div>
+					<button class="sdpi-item-value" id="pit_menu_down_key" onclick="onButtonInputClick(this)" name="pit_menu_key_button">N/A</button>
+				</div>
+
+				<div class="sdpi-item">
+					<div class="sdpi-item-label">Left</div>
+					<button class="sdpi-item-value" id="pit_menu_left_key" onclick="onButtonInputClick(this)" name="pit_menu_key_button">N/A</button>
+				</div>
+
+				<div class="sdpi-item">
+					<div class="sdpi-item-label">Right</div>
+					<button class="sdpi-item-value" id="pit_menu_right_key" onclick="onButtonInputClick(this)" name="pit_menu_key_button">N/A</button>
+				</div>
+
+				<div class="sdpi-item">
+					<div class="sdpi-item-label">Enter</div>
+					<button class="sdpi-item-value" id="pit_menu_enter_key" onclick="onButtonInputClick(this)" name="pit_menu_key_button">N/A</button>
+				</div>
+
+				<div class="sdpi-item">
+					<div class="sdpi-item-label">Requst box</div>
+					<button class="sdpi-item-value" id="pit_request_box_key" onclick="onButtonInputClick(this)" name="pit_menu_key_button">N/A</button>
+				</div>
+
+				<div class="sdpi-item">
+					<div class="sdpi-item-label">Toggle menu</div>
+					<button class="sdpi-item-value" id="pit_toggle_menu_key" onclick="onButtonInputClick(this)" name="pit_menu_key_button">N/A</button>
+				</div>
+
+				<div class="sdpi-heading">Key press times (milliseconds)</div>
+				<div class="sdpi-item">
+					<div class="sdpi-item-label">Between each keypress</div>
+					<input class="sdpi-item-value" id="millisec_between_each_cmd" type="text" value="200"
 						   placeholder="Default: 200" />
 				</div>
 
 				<div class="sdpi-item">
-					<div class="sdpi-item-label">Time between each keypress for fuel (ms)</div>
-					<input id="waitBetweenEachFuelStep" class="sdpi-item-value" type="text" value="20"
+					<div class="sdpi-item-label">Between each keypress fuel</div>
+					<input class="sdpi-item-value" id="millisec_between_each_fuel_cmd" type="text" value="20"
 						   placeholder="Default: 20" />
 				</div>
 
 				<div class="sdpi-item">
-					<div class="sdpi-item-label">Holdtime for each keypress (ms)</div>
-					<input id="holdTimeMillisKeyPress" class="sdpi-item-value" type="text" value="10"
+					<div class="sdpi-item-label">Holdtime each keypress</div>
+					<input class="sdpi-item-value" id="millisec_key_holdtime" type="text" value="10"
 						   placeholder="Default: 10" />
 				</div>
 
-				<button id="update_settings_button" type="button" value="Update Settings"
-						onclick="updateGlobalSettings()">
+				<br>
+				<br>
+
+				<button id="update_settings_button" type="button" value="Update Settings" onclick="updateSettings()">
 					Update Settings
 				</button>
 			</div>
 		</div>
 	</div>
 
-	<!--<script src="js/comms_window_functions.js"></script>-->
+
+	<!--<script src="js/common.js"></script>-->
+	<!--<script src="js/common_pi.js"></script>-->
+	<!--<script src="js/r3esd_index.js"></script>-->
+	<!--<script src="js/custom_functions.js"></script>-->
+	<script src="js/settings_window.js"></script>
 
 </body>
 

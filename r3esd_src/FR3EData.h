@@ -2,6 +2,7 @@
 
 //#define _USE_MATH_DEFINES
 #include <Windows.h>
+#include <vector>
 #include <mutex>
 #include <condition_variable>
 #include "r3e.h"
@@ -55,6 +56,7 @@ private:
     HANDLE hStopEvent = NULL;      // An event handle created to stop threads thread_while_r3e_is_running() and thread_setPitOptions()
     const TCHAR* process_name = TEXT("RRRE64.exe");
 
+    std::array<unsigned short, 7> pitKeys;
     int holdTimeMillisKeyPress = 10;
     int waitBetweenEachCommands = 200;
     int waitBetweenEachFuelStep = 20;
@@ -96,6 +98,14 @@ private:
     float calculateFuel(); // Called by setPitOption() when needed
 
 public:
+    unsigned short PIT_MENU_UP = 0x57;        // W
+    unsigned short PIT_MENU_DOWN = 0x53;      // S
+    unsigned short PIT_MENU_LEFT = 0x41;      // A
+    unsigned short PIT_MENU_RIGHT = 0x44;     // D
+    unsigned short PIT_MENU_ENTER = 0x45;     // E
+    unsigned short PIT_REQUEST_BOX = 0x52;    // R
+    unsigned short PIT_TOGGLE_MENU = 0x51;    // Q
+
     bool setPitOptions(const std::vector<std::pair<int, bool>>& pitOptions, int refuel_option = 0, bool bRequestBoxThisLap = false, bool bClosePitMenu = true, bool bAbortOngoingPitOptions = false);
     bool isPitOptionsRunning();
     //std::string getPitStopDuration();

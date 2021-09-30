@@ -53,6 +53,7 @@ let sdpiWrapper = document.querySelector('.sdpi-wrapper');
  * in Stream Deck software, we can savely cache our settings in a global variable.
  */
 
+let global_settings;
 let settings;
 let action;
 
@@ -89,10 +90,18 @@ $SD.on('connected', (jsn) => {
      * const foundObject = Utils.getProp(JSON-OBJECT, 'path.to.target', defaultValueIfNotFound)
      */
 
+    //global_settings = Utils.getProp(jsn, 'actionInfo.payload.global_settings', false);
+    //global_settings = $SD.getGlobalSettings()
     settings = Utils.getProp(jsn, 'actionInfo.payload.settings', false);
     action = Utils.getProp(jsn, 'actionInfo.action');
-
+    if (!settings) settings = {};
     settings = addDefaultSettings(action, settings);
+
+    global_settings = {};
+    global_settings = addDefaultGlobalSettings(global_settings);
+    
+    $SD.api.getGlobalSettings($SD.uuid);
+
     updateUI(settings);
 });
 
@@ -124,6 +133,12 @@ $SD.on('sendToPropertyInspector', jsn => {
          */
      }
 });
+
+$SD.on('didReceiveGlobalSettings', jsn => {
+    global_settings = jsn.payload.settings;
+    global_settings = addDefaultGlobalSettings(global_settings);
+});
+
 
 
 const updateUI = (p1) => {
@@ -203,25 +218,10 @@ $SD.on('piDataChanged', (returnValue) => {
     console.log(returnValue);
     /* SAVE THE VALUE TO SETTINGS */
 
-    /*
-    var atest = document.getElementById("table_request_box_options");
-    var btest = document.getElementById("table_request_box_options_refuel");
-    if (settings.use_toggle_buttons.only) {
-
-        atest.style.display = 'none';
-        btest.style.display = 'none';
-    }
-    else
-    {
-        atest.style.display = 'block';
-        btest.style.display = 'block';
-    }
-    */
-
     saveSettings();
 
     /* SEND THE VALUES TO PLUGIN */
-    sendValueToPlugin(settings, 'settings');
+    //sendValueToPlugin(settings, 'settings');
 });
 
 /**

@@ -1,11 +1,40 @@
-function addDefaultGlobalSettings(settings) {
-    if (!settings.hasOwnProperty("r3e_executable")) {
-        settings["r3e_executable"] = "RRR64.exe";
+function addDefaultGlobalSettings(global_settings) {
+    if (!global_settings.hasOwnProperty("r3e_executable")) {
+        global_settings["r3e_executable"] = "RRR64.exe";
     }
-    if (!settings.hasOwnProperty("millisec_between_each_cmd")) {
-        settings["millisec_between_each_cmd"] = "200";
+    if (!global_settings.hasOwnProperty("pit_menu_up_key")) {
+        global_settings["pit_menu_up_key"] = 0x57;  // W
     }
-    return settings;
+    if (!global_settings.hasOwnProperty("pit_menu_down_key")) {
+        global_settings["pit_menu_down_key"] = 0x53; // S
+    }
+    if (!global_settings.hasOwnProperty("pit_menu_left_key")) {
+        global_settings["pit_menu_left_key"] = 0x41; // A
+    }
+    if (!global_settings.hasOwnProperty("pit_menu_right_key")) {
+        global_settings["pit_menu_right_key"] = 0x44; // D
+    }
+    if (!global_settings.hasOwnProperty("pit_menu_enter_key")) {
+        global_settings["pit_menu_enter_key"] = 0x45; // E
+    }
+    if (!global_settings.hasOwnProperty("pit_request_box_key")) {
+        global_settings["pit_request_box_key"] = 0x52; // R
+    }
+    if (!global_settings.hasOwnProperty("pit_toggle_menu_key")) {
+        global_settings["pit_toggle_menu_key"] = 0x51; // Q
+    }
+
+
+    if (!global_settings.hasOwnProperty("millisec_between_each_cmd")) {
+        global_settings["millisec_between_each_cmd"] = 200;
+    }
+    if (!global_settings.hasOwnProperty("millisec_between_each_fuel_cmd")) {
+        settings["millisec_between_each_fuel_cmd"] = 20;
+    }
+    if (!global_settings.hasOwnProperty("millisec_key_holdtime")) {
+        global_settings["millisec_key_holdtime"] = 10;
+    }
+    return global_settings;
 }
 
 function addDefaultSettings(action, settings) {
@@ -31,4 +60,25 @@ function addDefaultSettings(action, settings) {
     }
 
     return settings;
+}
+
+function openSettingsWindowsButtonPress() {
+    if (!window.uisettingswindow || window.uisettingswindow.closed) {
+        window.uisettingswindow = window.open('settings_window.html', 'Global Settings');
+    }
+}
+
+// Called by window.uisettingswindow
+function updateGlobalSettings(savedGlobalSettings) {
+    var e = document.getElementById("description_id");
+    if (!window.uisettingswindow) return;
+
+    global_settings = savedGlobalSettings;
+    e.innerHTML = "Key[" + global_settings["pit_menu_up_key"] + "]";
+    $SD.api.setGlobalSettings($SD.uuid, global_settings);
+}
+
+// Called by window.uisettingswindow
+function getGlobalSettings() {
+    return global_settings;
 }

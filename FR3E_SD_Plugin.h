@@ -36,6 +36,7 @@ public:
 	
 	void SendToPlugin(const std::string& inAction, const std::string& inContext, const json &inPayload, const std::string& inDeviceID) override;
 	void DidReceiveSettings(const std::string& inAction, const std::string& inContext, const json& inPayload, const std::string& inDeviceID) override;
+	void DidReceiveGlobalSettings(const json& inPayload) override;
 
 private:
 	const static int DO_NOTHING = 0;
