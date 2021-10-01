@@ -1,10 +1,11 @@
 # com.vantdev.r3einterface.sdPlugin
 Raceroom plugin for Streamdeck
 
-V1.0 is released.
-Currently, pit-menu keys in Raceroom needs to assigned,
-just like you have to in Crewchief.
-There is a plan to setup the keys in the plugin though.
+V1.1 is released.
+A major bug was fixed where increase- and decrease-keys where swapped.
+Added a Global Settings window where keys can be set.
+
+Default keys are as follows:
 
 W pitmenu up key.
 
