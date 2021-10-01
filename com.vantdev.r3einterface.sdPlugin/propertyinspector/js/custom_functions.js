@@ -1,7 +1,7 @@
 // Set default values of missing keys for the global settings
 function addDefaultGlobalSettings(global_settings) {
     if (!global_settings.hasOwnProperty("r3e_executable")) {
-        global_settings["r3e_executable"] = "RRR64.exe";
+        global_settings["r3e_executable"] = "RRRE64.exe";
     }
 
 

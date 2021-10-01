@@ -230,7 +230,7 @@ bool FR3EData::setPitOption(int selection, bool bOn, int refuel_option)
         {
             if (r3eSharedData->pit_menu_state[selection] == -1) return false;
             if (abortOnGoingPitOptions) return true;
-            FKeyCommand::SendScanCodeKeyPress(PIT_MENU_RIGHT, holdTimeMillisKeyPress);
+            FKeyCommand::SendScanCodeKeyPress(PIT_MENU_LEFT, holdTimeMillisKeyPress);
             std::this_thread::sleep_for(std::chrono::milliseconds(waitBetweenEachFuelStep));
         }
 
@@ -246,7 +246,7 @@ bool FR3EData::setPitOption(int selection, bool bOn, int refuel_option)
             {
                 if (r3eSharedData->pit_menu_state[selection] == -1) return false;
                 if (abortOnGoingPitOptions) return true;
-                FKeyCommand::SendScanCodeKeyPress(PIT_MENU_LEFT, holdTimeMillisKeyPress);
+                FKeyCommand::SendScanCodeKeyPress(PIT_MENU_RIGHT, holdTimeMillisKeyPress);
                 std::this_thread::sleep_for(std::chrono::milliseconds(waitBetweenEachFuelStep));
             }
         }
@@ -255,7 +255,7 @@ bool FR3EData::setPitOption(int selection, bool bOn, int refuel_option)
             // If refuel safe, normal or risky
             for (int i = 0; i < refuel_option; i++)
             {
-                FKeyCommand::SendScanCodeKeyPress(PIT_MENU_LEFT, holdTimeMillisKeyPress);
+                FKeyCommand::SendScanCodeKeyPress(PIT_MENU_RIGHT, holdTimeMillisKeyPress);
                 std::this_thread::sleep_for(std::chrono::milliseconds(waitBetweenEachFuelStep));
             }
         }
