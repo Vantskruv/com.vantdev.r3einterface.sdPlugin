@@ -25,6 +25,39 @@ FR3EData::~FR3EData()
     mR3EMemory.unlock();
 }
 
+void FR3EData::setExecutable(const std::string& sExec)
+{
+    mR3EMemory.lock();
+    close_shared_memory();
+    process_name = std::wstring(sExec.begin(), sExec.end());
+    mR3EMemory.unlock();
+
+    //init_shared_memory();
+}
+
+void FR3EData::setKeyCodes(unsigned short _PIT_MENU_UP, unsigned short _PIT_NENU_DOWN, unsigned short _PIT_MENU_LEFT, unsigned short _PIT_MENU_RIGHT, unsigned short _PIT_MENU_ENTER, unsigned short _PIT_REQUEST_BOX, unsigned short _PIT_TOGGLE_MENU)
+{
+    abortOnGoingPitOptions = true;
+    std::scoped_lock<std::mutex> lckScoped(mSetCurrentPitOptions);  // We do not want pit-options executing while we set new keys.
+
+    if (_PIT_MENU_UP > 0) PIT_MENU_UP = _PIT_MENU_UP;
+    if (_PIT_NENU_DOWN > 0) PIT_MENU_DOWN = _PIT_NENU_DOWN;
+    if (_PIT_MENU_LEFT > 0) PIT_MENU_LEFT = _PIT_MENU_LEFT;
+    if (_PIT_MENU_RIGHT > 0) PIT_MENU_RIGHT = _PIT_MENU_RIGHT;
+    if (_PIT_MENU_ENTER > 0) PIT_MENU_ENTER = _PIT_MENU_ENTER;
+    if (_PIT_REQUEST_BOX > 0) PIT_REQUEST_BOX = _PIT_REQUEST_BOX;
+    if (_PIT_TOGGLE_MENU > 0) PIT_TOGGLE_MENU = _PIT_TOGGLE_MENU;
+}
+
+void FR3EData::setTimings(int _holdTime, int _waitCmd, int _waitCmdFuel)
+{
+    abortOnGoingPitOptions = true;
+    std::scoped_lock<std::mutex> lckScoped(mSetCurrentPitOptions);  // We do not want pit-options executing while we set new keys.
+    if (_holdTime > 0 && _holdTime <= 1000) holdTimeMillisKeyPress = _holdTime;
+    if (_waitCmd > 0 && _waitCmd <= 1000) waitBetweenEachCommands = _waitCmd;
+    if (_waitCmdFuel > 0 && _waitCmdFuel <= 1000) waitBetweenEachFuelStep = _waitCmdFuel;
+}
+
 
 // Closes current open data and threads, and tries to find R3E process.
 // If found, it allocates shared memory, and starts threads.
@@ -114,7 +147,8 @@ bool FR3EData::is_r3e_running()
         {
             do
             {
-                if (_tcscmp(entry.szExeFile, process_name) == 0)
+                //if (_tcscmp(entry.szExeFile, process_name) == 0)
+                if (process_name.compare(entry.szExeFile) == 0)
                 {
                     hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, entry.th32ProcessID);
                     result = TRUE;

@@ -12,19 +12,19 @@
     <div class="sdpi-wrapper">
         <!-- DROP HTML-STUFF BELOW -->
         <!--
-          Here we just copied a couple of elements from the PISamples example, which contains
-          a huge collection pre-made HTML-elements for you to use.
-          Important here is (if you plan to communicate from the Property Inspector to the plugin without
-          further programming), that you add an 'id' to an element's control.
-          This will get the 'key', which is sent to the plugin (or settings), along with the value of
-          the control.
-        -->
+      Here we just copied a couple of elements from the PISamples example, which contains
+      a huge collection pre-made HTML-elements for you to use.
+      Important here is (if you plan to communicate from the Property Inspector to the plugin without
+      further programming), that you add an 'id' to an element's control.
+      This will get the 'key', which is sent to the plugin (or settings), along with the value of
+      the control.
+    -->
         <!--
-        <div id="description_id">
-            Toggles a selected pit-stop option.
-            <br>
-        </div>
-            -->
+    <div id="description_id">
+        Toggles a selected pit-stop option.
+        <br>
+    </div>
+        -->
         <div class="sdpi-item" id="table_toggle_box_option">
             <table class="sdpi-item-value single-select" width="100%">
                 <col style="width:25%" span="4" />
@@ -60,6 +60,10 @@
                 </tr>
             </table>
         </div>
+
+        <button id="open_window_settings" type="button" value="Global Settings" onclick="openSettingsWindowsButtonPress()">
+            Global Settings
+        </button>
         <!-- END OF SDPI-WRAPPER -->
     </div>
 

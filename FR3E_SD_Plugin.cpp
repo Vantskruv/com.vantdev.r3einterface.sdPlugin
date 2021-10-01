@@ -352,21 +352,20 @@ void FR3E_SD_Plugin::DidReceiveGlobalSettings(const json& inPayload)
 
 	json settings;
 	if (!EPLJSONUtils::GetObjectByName(inPayload, "settings", settings)) return;
+	
+	std::string sExec = EPLJSONUtils::GetStringByName(settings, "r3e_executable", "RRRE64.exe");
+	int pitMenuUp = EPLJSONUtils::GetIntByName(settings, "pit_menu_up_key", 0x57);
+	int pitMenuDown = EPLJSONUtils::GetIntByName(settings, "pit_menu_down_key", 0x53);
+	int pitMenuLeft = EPLJSONUtils::GetIntByName(settings, "pit_menu_left_key", 0x41);
+	int pitMenuRight = EPLJSONUtils::GetIntByName(settings, "pit_menu_right_key", 0x44);
+	int pitMenuEnter = EPLJSONUtils::GetIntByName(settings, "pit_menu_enter_key", 0x45);
+	int pitMenuBox = EPLJSONUtils::GetIntByName(settings, "pit_request_box_key", 0x52);
+	int pitMenuToggle = EPLJSONUtils::GetIntByName(settings, "pit_toggle_menu_key", 0x51);
+	int waitCmd = EPLJSONUtils::GetIntByName(settings, "millisec_between_each_cmd", 200);
+	int waitCmdFuel = EPLJSONUtils::GetIntByName(settings, "millisec_between_each_fuel_cmd", 20);
+	int holdTime = EPLJSONUtils::GetIntByName(settings, "millisec_key_holdtime", 10);
 
-	int pitMenuUp = EPLJSONUtils::GetIntByName(settings, "pit_menu_up_key", -1);
-	int pitMenuDown = EPLJSONUtils::GetIntByName(settings, "pit_menu_down_key", -1);
-	int pitMenuLeft = EPLJSONUtils::GetIntByName(settings, "pit_menu_left_key", -1);
-	int pitMenuRight = EPLJSONUtils::GetIntByName(settings, "pit_menu_right_key", -1);
-	int pitMenuEnter = EPLJSONUtils::GetIntByName(settings, "pit_menu_enter_key", -1);
-	int pitMenuBox = EPLJSONUtils::GetIntByName(settings, "pit_request_box_key", -1);
-	int pitMenuToggle = EPLJSONUtils::GetIntByName(settings, "pit_toggle_menu_key", -1);
-
-
-	if (pitMenuUp > 0) r3e_data->PIT_MENU_UP = pitMenuUp;
-	if (pitMenuDown > 0) r3e_data->PIT_MENU_DOWN = pitMenuDown;
-	if (pitMenuLeft > 0) r3e_data->PIT_MENU_LEFT = pitMenuLeft;
-	if (pitMenuRight > 0) r3e_data->PIT_MENU_RIGHT = pitMenuRight;
-	if (pitMenuEnter > 0) r3e_data->PIT_MENU_ENTER = pitMenuEnter;
-	if (pitMenuBox > 0) r3e_data->PIT_REQUEST_BOX = pitMenuBox;
-	if (pitMenuToggle > 0) r3e_data->PIT_TOGGLE_MENU = pitMenuToggle;
+	r3e_data->setExecutable(sExec);
+	r3e_data->setKeyCodes(pitMenuUp, pitMenuDown, pitMenuLeft, pitMenuRight, pitMenuEnter, pitMenuBox, pitMenuToggle);
+	r3e_data->setTimings(holdTime, waitCmd, waitCmdFuel);
 }

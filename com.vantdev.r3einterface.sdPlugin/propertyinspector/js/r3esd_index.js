@@ -90,16 +90,13 @@ $SD.on('connected', (jsn) => {
      * const foundObject = Utils.getProp(JSON-OBJECT, 'path.to.target', defaultValueIfNotFound)
      */
 
-    //global_settings = Utils.getProp(jsn, 'actionInfo.payload.global_settings', false);
-    //global_settings = $SD.getGlobalSettings()
     settings = Utils.getProp(jsn, 'actionInfo.payload.settings', false);
     action = Utils.getProp(jsn, 'actionInfo.action');
     if (!settings) settings = {};
     settings = addDefaultSettings(action, settings);
 
     global_settings = {};
-    global_settings = addDefaultGlobalSettings(global_settings);
-    
+    global_settings = addDefaultGlobalSettings(global_settings); // Set default settings if didRecieveGlobalSettings fails.
     $SD.api.getGlobalSettings($SD.uuid);
 
     updateUI(settings);
@@ -134,9 +131,11 @@ $SD.on('sendToPropertyInspector', jsn => {
      }
 });
 
+// Is called when getGlobalSettings is called in property inspewctor,
+// or when setGlobalSettings is called from the plugin.
 $SD.on('didReceiveGlobalSettings', jsn => {
-    global_settings = jsn.payload.settings;
-    global_settings = addDefaultGlobalSettings(global_settings);
+    // Saved global settings is recieved, add the default settings if some keys are missing.
+    global_settings = addDefaultGlobalSettings(jsn.payload.settings);
 });
 
 

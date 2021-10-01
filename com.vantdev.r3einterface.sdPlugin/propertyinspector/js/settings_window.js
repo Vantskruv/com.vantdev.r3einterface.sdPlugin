@@ -1,59 +1,62 @@
-let global_settings = {};
+//let global_settings = {};
+let elKeyDetect = null;
 
 function initializeSettingsWindow() {
 
-    global_settings = opener.getGlobalSettings();
-    
-    /*
-    global_settings["pit_menu_up_key"] = 0x57;
-    global_settings["pit_menu_down_key"] = 0x53;
-    global_settings["pit_menu_left_key"] = 0x41;
-    global_settings["pit_menu_right_key"] = 0x44;
-    global_settings["pit_menu_enter_key"] = 0x45;
-    global_settings["pit_request_box_key"] = 0x52;
-    global_settings["pit_toggle_menu_key"] = 0x51;
-    */
+    // Retrieve a cooy of global_settings
+    //var global_settings = opener.global_settings;
+    var global_settings = opener.getGlobalSettings();
 
-    saveSettings();
+    // Elements are assigned stored data from global_settings in the opener-document (calling window).
+
+     var e = document.getElementById("r3e_executable");
+     e.value = global_settings["r3e_executable"];
+
+    var elements = document.getElementsByName("pit_menu_key_button");
+    for (var i = 0; i < elements.length; i++) {
+        elements[i].r3e_keycode = global_settings[elements[i].id];
+        if (keyCodeList.has(global_settings[elements[i].id])) {
+            elements[i].innerHTML = keyCodeList.get(global_settings[elements[i].id]);
+        }
+        else {
+            elements[i].innerHTML = "[" + global_settings[elements[i].id] + "]";
+        }
+    }
+
+    var e = document.getElementById("millisec_between_each_cmd");
+    e.value = global_settings["millisec_between_each_cmd"];
+    e = document.getElementById("millisec_between_each_fuel_cmd");
+    e.value = global_settings["millisec_between_each_fuel_cmd"];
+    e = document.getElementById("millisec_key_holdtime");
+    e.value = global_settings["millisec_key_holdtime"];
 
     document.addEventListener('keydown', keyDownEventListener);
 }
 
-function saveSettings()
-{
-    var elements = document.getElementsByName("pit_menu_key_button");
-    for (var i = 0; i < elements.length; i++) {
-        if (global_settings.hasOwnProperty(elements[i].id)) {
-            elements[i].r3e_keycode = global_settings[elements[i].id];
-            if (keyCodeList.has(global_settings[elements[i].id])) {
-                elements[i].innerHTML = keyCodeList.get(global_settings[elements[i].id]);
-            }
-            else {
-                elements[i].innerHTML = "[" + global_settings[elements[i].id] + "]";
-            }
-        }
-        else {
-            elements[i].innerHTML = "N/A";
-            elements[i].r3e_keycode = 0x07; //Undefined
-        }
-    }
-}
-
+// Save the the settings from the elements in to the global_settings in the calling window.
+// Invalid values will be set to default in the updateGlobalSettings function in the calling window.
 function updateSettings() {
-    var elements = document.getElementsByName("pit_menu_key_button")
+    var global_settings = {};
 
+    var e = document.getElementById("r3e_executable");
+    if (e.value.length) global_settings["r3e_executable"] = e.value;
+
+    var elements = document.getElementsByName("pit_menu_key_button")
     for (var i = 0; i < elements.length; i++) {
-        global_settings[elements[i].id] = elements[i].r3e_keycode;
+        if (elements[i].r3e_keycode) global_settings[elements[i].id] = elements[i].r3e_keycode;
     }
 
-    saveSettings();
+    e = document.getElementById("millisec_between_each_cmd");
+    var iValue = parseInt(e.value);
+    if (iValue > 0 && iValue <= 1000)  global_settings["millisec_between_each_cmd"] = iValue;
+    e = document.getElementById("millisec_between_each_fuel_cmd");
+    iValue = parseInt(e.value);
+    if (iValue > 0 && iValue <= 1000)  global_settings["millisec_between_each_fuel_cmd"] = iValue;
+    e = document.getElementById("millisec_key_holdtime");
+    iValue = parseInt(e.value);
+    if (iValue > 0 && iValue <= 1000)  global_settings["millisec_key_holdtime"] = iValue;
 
     opener.updateGlobalSettings(global_settings);
-}
-
-function getUpdatedGlobalSettings() {
-    return "Child return";
-    //return global_settings;
 }
 
 function onButtonInputClick(e) {
@@ -61,18 +64,18 @@ function onButtonInputClick(e) {
     elKeyDetect.innerHTML = "Press key ...";
 }
 
-//document.addEventListener('keydown', function (event) {
 function keyDownEventListener(event)
 {
-    if (elKeyDetect == null || event.keyCode > 255) return;
+    if (elKeyDetect == null) return;
 
     event.preventDefault();
     event.stopImmediatePropagation();
 
     // Assign the keycode
-    elKeyDetect.r3e_keycode = event.keyCode;
+    //elKeyDetect.r3e_keycode = event.keyCode;
 
     if (keyCodeList.has(event.keyCode)) {
+        elKeyDetect.r3e_keycode = event.keyCode;
         elKeyDetect.innerHTML = keyCodeList.get(event.keyCode);
 
         if (event.keyCode == 17) // Control
@@ -114,7 +117,11 @@ function keyDownEventListener(event)
     }
     else {
         // We are not sure what it is, but support it anyway ...
-        elKeyDetect.innerHTML = "[" + event.keyCode + "]";
+        //elKeyDetect.innerHTML = "[" + event.keyCode + "]";
+
+        // We are not sure what the key is, we ignore the key.
+        elKeyDetect.r3e_keycode = 0;
+        elKeyDetect.innerHTML = "N/A";
     }
 
     elKeyDetect = null;

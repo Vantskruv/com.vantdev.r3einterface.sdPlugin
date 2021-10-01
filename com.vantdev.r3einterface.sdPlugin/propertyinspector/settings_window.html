@@ -68,8 +68,10 @@
 				</div>
 
 				<div class="sdpi-heading">Pit menu keys</div>
-				Keyboards differs between regions in the world. <br>
-				So special key-characters may not work as intended.
+				Roman script letters from 700BC (letters A-Z) is supported,<br>
+				aswell as the Hindu-Arabic numerals from the 6th century (0-9),<br>
+				and some of the modern era function keys from the end of the 20th century.
+
 				<div class="sdpi-item">
 					<div class="sdpi-item-label">Up</div>
 					<button class="sdpi-item-value" id="pit_menu_up_key" onclick="onButtonInputClick(this)" name="pit_menu_key_button">N/A</button>
@@ -107,20 +109,17 @@
 				<div class="sdpi-heading">Key press times (milliseconds)</div>
 				<div class="sdpi-item">
 					<div class="sdpi-item-label">Between each keypress</div>
-					<input class="sdpi-item-value" id="millisec_between_each_cmd" type="text" value="200"
-						   placeholder="Default: 200" />
+					<input class="sdpi-item-value" id="millisec_between_each_cmd" type="number" min="1" max="1000" step="1" value = 200 placeholder="Default: 200">
 				</div>
 
 				<div class="sdpi-item">
 					<div class="sdpi-item-label">Between each keypress fuel</div>
-					<input class="sdpi-item-value" id="millisec_between_each_fuel_cmd" type="text" value="20"
-						   placeholder="Default: 20" />
+					<input class="sdpi-item-value" id="millisec_between_each_fuel_cmd" type="number" min="1" max="1000" step="1" value = 20 placeholder="Default: 20">
 				</div>
 
 				<div class="sdpi-item">
 					<div class="sdpi-item-label">Holdtime each keypress</div>
-					<input class="sdpi-item-value" id="millisec_key_holdtime" type="text" value="10"
-						   placeholder="Default: 10" />
+					<input class="sdpi-item-value" id="millisec_key_holdtime" type="number" min="1" max="1000" step="1" value=10 placeholder="Default: 10">
 				</div>
 
 				<br>
@@ -137,7 +136,7 @@
 	<!--<script src="js/common.js"></script>-->
 	<!--<script src="js/common_pi.js"></script>-->
 	<!--<script src="js/r3esd_index.js"></script>-->
-	<!--<script src="js/custom_functions.js"></script>-->
+	<script src="js/custom_functions.js"></script>
 	<script src="js/settings_window.js"></script>
 
 </body>

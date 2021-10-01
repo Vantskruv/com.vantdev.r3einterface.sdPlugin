@@ -1,7 +1,10 @@
+// Set default values of missing keys for the global settings
 function addDefaultGlobalSettings(global_settings) {
     if (!global_settings.hasOwnProperty("r3e_executable")) {
         global_settings["r3e_executable"] = "RRR64.exe";
     }
+
+
     if (!global_settings.hasOwnProperty("pit_menu_up_key")) {
         global_settings["pit_menu_up_key"] = 0x57;  // W
     }
@@ -24,19 +27,21 @@ function addDefaultGlobalSettings(global_settings) {
         global_settings["pit_toggle_menu_key"] = 0x51; // Q
     }
 
-
+   
     if (!global_settings.hasOwnProperty("millisec_between_each_cmd")) {
         global_settings["millisec_between_each_cmd"] = 200;
     }
     if (!global_settings.hasOwnProperty("millisec_between_each_fuel_cmd")) {
-        settings["millisec_between_each_fuel_cmd"] = 20;
+        global_settings["millisec_between_each_fuel_cmd"] = 20;
     }
     if (!global_settings.hasOwnProperty("millisec_key_holdtime")) {
         global_settings["millisec_key_holdtime"] = 10;
     }
+
     return global_settings;
 }
 
+// Set default values of missing keys for this action-item.
 function addDefaultSettings(action, settings) {
     if (action == "com.vantdev.r3sd.toggleboxoptionbutton")
     {
@@ -68,17 +73,18 @@ function openSettingsWindowsButtonPress() {
     }
 }
 
-// Called by window.uisettingswindow
+// Called by window.uisettingswindow when user presses save settings in the window.
 function updateGlobalSettings(savedGlobalSettings) {
-    var e = document.getElementById("description_id");
-    if (!window.uisettingswindow) return;
+    // Add default keys if keys are missing (hence invalid data which is ignored in the settings_window)
+    global_settings = addDefaultGlobalSettings(savedGlobalSettings);
 
-    global_settings = savedGlobalSettings;
-    e.innerHTML = "Key[" + global_settings["pit_menu_up_key"] + "]";
+    // Save the global settings, plugin will be notified by this in its didRecieveGlobalSettings function.
+    // (note, the equal property inspector function will not recieve this notification).
     $SD.api.setGlobalSettings($SD.uuid, global_settings);
 }
 
-// Called by window.uisettingswindow
+
+// Called by window.uisettingswindow when initilized
 function getGlobalSettings() {
     return global_settings;
 }

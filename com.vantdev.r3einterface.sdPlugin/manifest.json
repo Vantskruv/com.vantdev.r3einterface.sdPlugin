@@ -42,8 +42,9 @@
     }
   ], 
   "SDKVersion": 2,
-  "Author": "Johannes Bergmark", 
+  "Author": "Johannes Bergmark",
   "CodePath": "r3e_sd.exe", 
+  "DefaultWindowSize": [600, 750],
   "Description": "Communicate with RaceRoom (R3E)",
   "Name": "Raceroom Interface", 
   "Category":  "Raceroom Interface",

@@ -54,9 +54,17 @@ private:
     HANDLE hMap = NULL;            // Handle to R3E memory.
     HANDLE hProcess = NULL;        // When we detected that R3E is running, assign a handle for its process
     HANDLE hStopEvent = NULL;      // An event handle created to stop threads thread_while_r3e_is_running() and thread_setPitOptions()
-    const TCHAR* process_name = TEXT("RRRE64.exe");
 
-    std::array<unsigned short, 7> pitKeys;
+    //const TCHAR* process_name = TEXT("RRRE64.exe");
+    std::wstring process_name = L"RRRE64.exe";
+    unsigned short PIT_MENU_UP = 0x57;        // W
+    unsigned short PIT_MENU_DOWN = 0x53;      // S
+    unsigned short PIT_MENU_LEFT = 0x41;      // A
+    unsigned short PIT_MENU_RIGHT = 0x44;     // D
+    unsigned short PIT_MENU_ENTER = 0x45;     // E
+    unsigned short PIT_REQUEST_BOX = 0x52;    // R
+    unsigned short PIT_TOGGLE_MENU = 0x51;    // Q
+
     int holdTimeMillisKeyPress = 10;
     int waitBetweenEachCommands = 200;
     int waitBetweenEachFuelStep = 20;
@@ -98,14 +106,10 @@ private:
     float calculateFuel(); // Called by setPitOption() when needed
 
 public:
-    unsigned short PIT_MENU_UP = 0x57;        // W
-    unsigned short PIT_MENU_DOWN = 0x53;      // S
-    unsigned short PIT_MENU_LEFT = 0x41;      // A
-    unsigned short PIT_MENU_RIGHT = 0x44;     // D
-    unsigned short PIT_MENU_ENTER = 0x45;     // E
-    unsigned short PIT_REQUEST_BOX = 0x52;    // R
-    unsigned short PIT_TOGGLE_MENU = 0x51;    // Q
 
+    void setExecutable(const std::string& sExec);
+    void setKeyCodes(unsigned short _PIT_MENU_UP, unsigned short _PIT_NENU_DOWN, unsigned short _PIT_MENU_LEFT, unsigned short _PIT_MENU_RIGHT, unsigned short _PIT_MENU_ENTER, unsigned short _PIT_REQUEST_BOX, unsigned short _PIT_TOGGLE_MENU);
+    void setTimings(int _holdTime, int _waitCmd, int _waitCmdFuel);
     bool setPitOptions(const std::vector<std::pair<int, bool>>& pitOptions, int refuel_option = 0, bool bRequestBoxThisLap = false, bool bClosePitMenu = true, bool bAbortOngoingPitOptions = false);
     bool isPitOptionsRunning();
     //std::string getPitStopDuration();
