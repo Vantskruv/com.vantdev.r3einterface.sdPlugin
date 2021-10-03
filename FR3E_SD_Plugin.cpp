@@ -97,7 +97,7 @@ void FR3E_SD_Plugin::KeyUpForAction(const std::string& inAction, const std::stri
 
 		bool bUseToggleButtons = EPLJSONUtils::GetBoolByName(settings, "use_toggle_buttons_only", false);
 		bool bRequestBoxThisLap = EPLJSONUtils::GetBoolByName(settings, "request_box", false);
-		bool bClosePitMenu = true;
+		bool bClosePitMenu = EPLJSONUtils::GetBoolByName(settings, "close_pit_menu", false);
 
 		std::vector<std::pair<int, bool>> pitOptions;
 		int iRefuelOption;

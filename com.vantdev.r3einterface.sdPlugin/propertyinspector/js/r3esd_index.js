@@ -156,6 +156,7 @@ const updateUI = (p1) => {
     else if (action == "com.vantdev.r3sd.requestboxbutton") {
         document.getElementById("request_box").checked = settings.request_box;
         document.getElementById("use_toggle_buttons").checked = settings.use_toggle_buttons_only;
+        document.getElementById("close_pit_menu").checked = settings.close_pit_menu;
 
         var tableRequestBoxOptions = document.getElementById("table_request_box_options").getElementsByTagName("td");
         for (var i = 0; i < tableRequestBoxOptions.length; i++) {
@@ -256,6 +257,7 @@ function saveSettings()
 
         settings.request_box = document.getElementById("request_box").checked;
         settings.use_toggle_buttons_only = document.getElementById("use_toggle_buttons").checked;
+        settings.close_pit_menu = document.getElementById("close_pit_menu").checked;
 
         var tableItems = document.getElementById("table_request_box_options").getElementsByTagName("td");
         for (var i = 0; i < tableItems.length; i++) {

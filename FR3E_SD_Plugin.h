@@ -77,8 +77,6 @@ private:
 	//std::set<std::string> mVisibleRequestBoxButtons;
 	
 	//Settings set by toggle-switches
-	//std::array<bool, 9> lPitOptions;
-	std::set<int> setPitOptions;
 
 	bool serve_penalty = false;
 	bool driver_change = false;

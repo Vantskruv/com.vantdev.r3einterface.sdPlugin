@@ -62,6 +62,7 @@ function addDefaultSettings(action, settings) {
         if (!settings.hasOwnProperty("refuel_option")) settings.refuel_option = BOX_OPTIONS.DO_NOTHING;
         if (!settings.hasOwnProperty("use_toggle_buttons_only")) settings.use_toggle_buttons_only = false;
         if (!settings.hasOwnProperty("request_box")) settings.request_box = false;
+        if (!settings.hasOwnProperty("close_pit_menu")) settings.close_pit_menu = false;
     }
 
     return settings;
@@ -71,6 +72,10 @@ function openSettingsWindowsButtonPress() {
     if (!window.uisettingswindow || window.uisettingswindow.closed) {
         window.uisettingswindow = window.open('settings_window.html', 'Global Settings');
     }
+}
+
+function openHelpWindowButtonPress() {
+    window.open("help.html", "Raceroom Interface help");
 }
 
 // Called by window.uisettingswindow when user presses save settings in the window.

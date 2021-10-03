@@ -23,12 +23,16 @@
 			<br>
 		</div>
 		<div type="checkbox" class="sdpi-item">
-			<input class="sdpi-item-value" id="use_toggle_buttons" type="checkbox" value="use_toggle_buttons">
+			<input class="sdpi-item-value" id="use_toggle_buttons" type="checkbox">
 			<label for="use_toggle_buttons"><span></span>Use only toggle buttons</label>
 		</div>
 		<div type="checkbox" class="sdpi-item">
-			<input class="sdpi-item-value" id="request_box" type="checkbox" value="request_box">
+			<input class="sdpi-item-value" id="request_box" type="checkbox">
 			<label for="request_box"><span></span>Request box this lap when pressed</label>
+		</div>
+		<div type="checkbox" class="sdpi-item">
+			<input class="sdpi-item-value" id="close_pit_menu" type="checkbox">
+			<label for="close_pit_menu"><span></span>Close pit menu when finished</label>
 		</div>
 
 		<div class="sdpi-item" id="table_request_box_options">
@@ -72,18 +76,21 @@
 					<td data-index=12>Calc</td>
 			</table>
 		</div>
-
-		<button id="open_window_settings" type="button" value="Global Settings" onclick="openSettingsWindowsButtonPress()">
-			Global Settings
-		</button>
-
+		<div class="sdpi-item">
+			<button id="open_window_settings" type="button" value="Global Settings" onclick="openSettingsWindowsButtonPress()">
+				Global Settings
+			</button>
+			<button id="open_window_help" type="button" value="Help" onclick="openHelpWindowButtonPress()">
+				Help
+			</button>
+		</div>
 		<!-- END OF SDPI-WRAPPER -->
 	</div>
 
-	<script src="js/common.js"></script>
-	<script src="js/common_pi.js"></script>
-	<script src="js/r3esd_index.js"></script>
-	<script src="js/custom_functions.js"></script>
+		<script src="js/common.js"></script>
+		<script src="js/common_pi.js"></script>
+		<script src="js/r3esd_index.js"></script>
+		<script src="js/custom_functions.js"></script>
 </body>
 
 </html>

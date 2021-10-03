@@ -231,6 +231,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="com.vantdev.r3einterface.sdPlugin\manifest.json" />
+    <None Include="com.vantdev.r3einterface.sdPlugin\propertyinspector\help.html" />
     <None Include="com.vantdev.r3einterface.sdPlugin\propertyinspector\js\common.js" />
     <None Include="com.vantdev.r3einterface.sdPlugin\propertyinspector\js\common_pi.js" />
     <None Include="com.vantdev.r3einterface.sdPlugin\propertyinspector\js\custom_functions.js" />
