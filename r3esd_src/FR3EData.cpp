@@ -168,8 +168,10 @@ bool FR3EData::is_r3e_running()
 // Returns false if operation is aborted, or a pit-option is not available.
 bool FR3EData::setPitOption(int selection, bool bOn, int refuel_option)
 {
-    // If option is not available, we still return true if it is only is car-fixes, otherwise if user
-    // wants to refuel, change tires, serve a penalty, do a driver change, we return false.
+    // If option is not available, we still return true if the user wants to fix the car, otherwise if user
+    // wants to refuel or not, change tires or not we return false.
+    // Also, when serve a penalty or do a driver change, we return false if user specifically wants to do so,
+    // otherwise false.
     if (r3eSharedData->pit_menu_state[selection] == -1)
     {
         
@@ -180,6 +182,9 @@ bool FR3EData::setPitOption(int selection, bool bOn, int refuel_option)
             case R3E_PIT_MENU_REARAERO:
             case R3E_PIT_MENU_SUSPENSION:
                 return true;
+            case R3E_PIT_MENU_PENALTY:
+            case R3E_PIT_MENU_DRIVERCHANGE:
+                if (!bOn) return true;
         }
 
         return false;
@@ -327,10 +332,7 @@ bool FR3EData::setPitOptions(const std::vector<std::pair<int, bool>>& pitOptions
 /* Loop polling if currentPitOptions is set, and if set, execute the pitOptions.*/
 void FR3EData::thread_setPitOptions()
 {
-    //HANDLE hEvents[] = { hProcess, hStopEvent, hExecutePitOptions };
-    
     // If R3E process is not running, or the program wants to end, exit the thread.
-    //while (WaitForMultipleObjects(3, hEvents, false, INFINITE))
     while(!bExitThreadPitOptions)
     {
         std::unique_lock<std::mutex> lckCurrent(mSetCurrentPitOptions, std::defer_lock);
@@ -469,7 +471,7 @@ float FR3EData::calculateFuel()
         //Extra margin
         fuelCalc += fuelPerLap;
         float fuelLeft = r3eSharedData->fuel_left;
-        if (fuelCalc < 0.0f) return -1.0f;      // Some of the recieved data return negative (no connection).
+        if (fuelCalc < 0.0f) return -1.0f;      // Some of the recieved data returned negative (no connection).
         if (fuelCalc < fuelLeft) return 0.0f;   // We have enough fuel onboard.
 
         return fuelCalc;
