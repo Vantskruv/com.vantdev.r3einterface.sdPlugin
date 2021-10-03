@@ -162,83 +162,76 @@ bool FR3EData::is_r3e_running()
     return result;
 }
 
+
 // Executes one pitoption.
-// Returns FALSE if menu or option is not accessable.
-// Returns true if succeeded, or if abortOnGoinPitOptions is set.
+// Returns true if succeeded (even if car-damage-fixes is not available)
+// Returns false if operation is aborted, or a pit-option is not available.
 bool FR3EData::setPitOption(int selection, bool bOn, int refuel_option)
 {
-    unsigned int navTries = 0;
-    unsigned int navTriesMAX = 5;
-
+    // If option is not available, we still return true if it is only is car-fixes, otherwise if user
+    // wants to refuel, change tires, serve a penalty, do a driver change, we return false.
     if (r3eSharedData->pit_menu_state[selection] == -1)
     {
-        return true;
+        
+        switch (selection)
+        {
+            case R3E_PIT_MENU_BODYWORK:
+            case R3E_PIT_MENU_FRONTAERO:
+            case R3E_PIT_MENU_REARAERO:
+            case R3E_PIT_MENU_SUSPENSION:
+                return true;
+        }
+
+        return false;
     }
 
-    // If option is not refuel, and the selection already as requested, we do not need to do anything.
+    // If option is not refuel, and the selection is already as requested, we do not need to do anything.
     if (selection != R3E_PIT_MENU_FUEL && r3eSharedData->pit_menu_state[selection] == (int)bOn) return true;
 
-    int pSelection = r3eSharedData->pit_menu_selection;
-
-    while (r3eSharedData->pit_menu_state[selection] != -1 && r3eSharedData->pit_menu_selection < selection)
+    // We navigate to the menu-item with a maximum number of tries, if it fails we return false.
+    for(unsigned int iNavTries = 0; iNavTries < 7; iNavTries++)
     {
-        // Go down until option is marked
-        if (abortOnGoingPitOptions) return true;
-        FKeyCommand::SendScanCodeKeyPress(PIT_MENU_DOWN, holdTimeMillisKeyPress);
+        if (r3eSharedData->pit_menu_selection < selection) FKeyCommand::SendScanCodeKeyPress(PIT_MENU_DOWN, holdTimeMillisKeyPress);
+        else if (r3eSharedData->pit_menu_selection > selection) FKeyCommand::SendScanCodeKeyPress(PIT_MENU_UP, holdTimeMillisKeyPress);
         std::this_thread::sleep_for(std::chrono::milliseconds(waitBetweenEachCommands));
-        if (pSelection == r3eSharedData->pit_menu_selection)
-        {
-            navTries++;
-            if (navTries > navTriesMAX) return false;
-            continue;
-        }
-        pSelection = r3eSharedData->pit_menu_selection;
+
+        if (r3eSharedData->pit_menu_selection == selection) break;
+
+        if (abortOnGoingPitOptions) return false;
     }
 
-    while (r3eSharedData->pit_menu_state[selection] != -1 && r3eSharedData->pit_menu_selection > selection)
-    {
-        // Go up until option is marked
-        if (abortOnGoingPitOptions) return true;
-        FKeyCommand::SendScanCodeKeyPress(PIT_MENU_UP, holdTimeMillisKeyPress);
-        std::this_thread::sleep_for(std::chrono::milliseconds(waitBetweenEachCommands));
-        if (pSelection == r3eSharedData->pit_menu_selection)
-        {
-            navTries++;
-            if (navTries > navTriesMAX) return false;
-            continue;
-        }
-        pSelection = r3eSharedData->pit_menu_selection;
-    }
-
-    // Check if we really ended on the right selection
+    // We failed to select the pit-menu-option, either pit-menu prematurly was closed, lost connection to R3E, keys wrongly binded,
+    // or something else happened ingame.
     if (r3eSharedData->pit_menu_selection != selection) return false;
-
 
     if (selection == R3E_PIT_MENU_FUEL)
     {
+        // Deselect the refuel-option
         if (r3eSharedData->pit_menu_state[selection] == 1)
         {
             FKeyCommand::SendScanCodeKeyPress(PIT_MENU_ENTER, holdTimeMillisKeyPress);
             std::this_thread::sleep_for(std::chrono::milliseconds(waitBetweenEachCommands));
         }
 
+        // Return true if use wanted to deselect the refuel-option (no refueling)
         if (!bOn) return true;
 
-        // Iterate to beginning of options
+        // Iterate to beginning of the refuel-option, return false if the options becomes unavailable, or operation is aborted.
         float totalCapacity = r3eSharedData->fuel_capacity;
         for (int i = 0; i < (totalCapacity + 4); i++)
         {
             if (r3eSharedData->pit_menu_state[selection] == -1) return false;
-            if (abortOnGoingPitOptions) return true;
+            if (abortOnGoingPitOptions) return false;
             FKeyCommand::SendScanCodeKeyPress(PIT_MENU_LEFT, holdTimeMillisKeyPress);
             std::this_thread::sleep_for(std::chrono::milliseconds(waitBetweenEachFuelStep));
         }
 
-        // If refuel to optimum level
+        // If refuel to calculated fuel level
         if (refuel_option == 3)
         {
             float liters = calculateFuel();
-            if (liters < 0.0f) return true;
+            if (liters == 0.0f) return true;    // We do not need to refuel.
+            if (liters < 0.0f) return false;    // Calculation is missing some data, return false.
             if (liters > totalCapacity) liters = totalCapacity;
 
             liters += 3; //Skip forward through safe, normal and risky options.
@@ -408,8 +401,7 @@ void FR3EData::thread_setPitOptions()
         bool bSuccess = true;
         for (auto iPitOption : currentPitOptions)
         {
-            if (abortOnGoingPitOptions) break;
-            if (!setPitOption(iPitOption.first, iPitOption.second, current_refuel_option)) { bSuccess = false; break; }
+            if (abortOnGoingPitOptions || !setPitOption(iPitOption.first, iPitOption.second, current_refuel_option)) { bSuccess = false; break; }
             std::this_thread::sleep_for(std::chrono::milliseconds(waitBetweenEachCommands));
         }
         
@@ -436,6 +428,11 @@ void FR3EData::thread_setPitOptions()
     }
 }
 
+
+// Calculate the required fuel for the session
+// Returns negative if data is invalid
+// Returns 0.0f if we have enough fuel onboard, otherwise
+// returns required fuel for the session.
 float FR3EData::calculateFuel()
 {
     /*
@@ -472,7 +469,8 @@ float FR3EData::calculateFuel()
         //Extra margin
         fuelCalc += fuelPerLap;
         float fuelLeft = r3eSharedData->fuel_left;
-        if (fuelCalc < fuelLeft) return -1.0f;
+        if (fuelCalc < 0.0f) return -1.0f;      // Some of the recieved data return negative (no connection).
+        if (fuelCalc < fuelLeft) return 0.0f;   // We have enough fuel onboard.
 
         return fuelCalc;
     }
@@ -490,7 +488,8 @@ float FR3EData::calculateFuel()
         fuelCalc += fuelPerLap; //Extra margin
 
         float fuelLeft = r3eSharedData->fuel_left;
-        if (fuelCalc < fuelLeft) return -1.0f;
+        if (fuelCalc < 0.0f) return -1.0f;  // Some of the recieved data returned negative (no connection)
+        if (fuelCalc < fuelLeft) return 0.0f; // We have enough fuel onboard.
 
         return fuelCalc;
     }
