@@ -114,13 +114,14 @@ void FR3E_SD_Plugin::KeyUpForAction(const std::string& inAction, const std::stri
 			pitOptions = {
 				{R3E_PIT_MENU_PENALTY, serve_penalty},
 				{R3E_PIT_MENU_DRIVERCHANGE, driver_change},
+				{R3E_PIT_MENU_FUEL, refuel_option != NO_REFUEL},
+				{R3E_PIT_MENU_FRONTTIRES, front_tires},
+				{R3E_PIT_MENU_REARTIRES, rear_tires},
 				{R3E_PIT_MENU_BODYWORK, bodywork},
 				{R3E_PIT_MENU_FRONTAERO, front_wing},
 				{R3E_PIT_MENU_REARAERO, rear_wing},
-				{R3E_PIT_MENU_SUSPENSION, suspension},
-				{R3E_PIT_MENU_FRONTTIRES, front_tires},
-				{R3E_PIT_MENU_REARTIRES, rear_tires},
-				{R3E_PIT_MENU_FUEL, refuel_option != NO_REFUEL} };
+				{R3E_PIT_MENU_SUSPENSION, suspension}
+			};
 
 			iRefuelOption = refuel_option - REFUEL_SAFE;
 		}
@@ -141,13 +142,15 @@ void FR3E_SD_Plugin::KeyUpForAction(const std::string& inAction, const std::stri
 			pitOptions = {
 				{R3E_PIT_MENU_PENALTY, EPLJSONUtils::GetBoolByName(settings, "serve_penalty", false)},
 				{R3E_PIT_MENU_DRIVERCHANGE, EPLJSONUtils::GetBoolByName(settings, "driver_change", false)},
+				{R3E_PIT_MENU_FUEL, iRefuelOption},
+				{R3E_PIT_MENU_FRONTTIRES, EPLJSONUtils::GetBoolByName(settings, "front_tires", false)},
+				{R3E_PIT_MENU_REARTIRES, EPLJSONUtils::GetBoolByName(settings, "rear_tires", false)},
 				{R3E_PIT_MENU_BODYWORK, EPLJSONUtils::GetBoolByName(settings, "fix_bodywork", false)},
 				{R3E_PIT_MENU_FRONTAERO, EPLJSONUtils::GetBoolByName(settings, "fix_front_aero", false)},
 				{R3E_PIT_MENU_REARAERO, EPLJSONUtils::GetBoolByName(settings, "fix_rear_aero", false)},
-				{R3E_PIT_MENU_SUSPENSION, EPLJSONUtils::GetBoolByName(settings, "fix_suspension", false)},
-				{R3E_PIT_MENU_FRONTTIRES, EPLJSONUtils::GetBoolByName(settings, "front_tires", false)},
-				{R3E_PIT_MENU_REARTIRES, EPLJSONUtils::GetBoolByName(settings, "rear_tires", false)},
-				{R3E_PIT_MENU_FUEL, iRefuelOption} };
+				{R3E_PIT_MENU_SUSPENSION, EPLJSONUtils::GetBoolByName(settings, "fix_suspension", false)}
+			};
+				 
 		}
 
 		mConnectionManager->SetState(0, inContext);

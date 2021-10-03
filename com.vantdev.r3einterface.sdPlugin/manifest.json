@@ -49,7 +49,7 @@
   "Name": "Raceroom Interface", 
   "Category":  "Raceroom Interface",
   "Icon": "R3E", 
-  "Version": "1.1",
+  "Version": "1.2",
   "OS": [
     {
         "Platform": "windows", 

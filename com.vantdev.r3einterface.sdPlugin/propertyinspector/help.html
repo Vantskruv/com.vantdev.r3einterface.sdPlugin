@@ -90,23 +90,40 @@
 				and you can also set the different background icons for the different states.
 				<br>
 			</div>
+
+			<div class="sdpi-heading"><b>The Fuel Calc option</b></div>
+			<div>
+				This fuel-option calculates the required fuel for the session. It relies on your best lap-time (if running a timed session),
+				and Racerooms internal calculation of fuel/lap.<br>
+				If there is no valid lap-time (if running a timed session), or no valid fuel/lap calculation, a box-this-lap will not be
+				requested, and the pit-menu will not be closed to notify you about that.
+				It is recommened to drive a couple of clean laps with good average laptimes, to get the best approximation of how much
+				fuel is required til the end of the session.<br>
+				No responsibility from my end will be taken if you end up with not enough fuel in the end of the session.
+				<br>
+			</div>
+
 			<div class="sdpi-heading"><b>When it fails</b></div>
 			<div>
-				If you request box this lap and some options are not available in the pit-menu, the pit-stop execution may stop
-				and leaving the pit-menu open, even if the <b>'Close pit menu when finished is checked'</b> in the request box button.<br>
+				If you request box this lap and some options are not available in the pit-menu, the pit-stop execution may leave
+				the pit-menu open and not request box this lap, even if the <b>'Close pit menu when finished is checked'</b> in the
+				request box button.<br>
 				The purpose for this is to notify the driver some important pitstop-options did not work.<br>
 				<br>
 				This will happen when:<br>
 				<br>
 				these options are active or not:<br>
 				* Change tires<br>
-				* Refuel<br>
+				* Refuel (i.e. this can happen if the 'Calc' option is set with no valid lap-times)<br>
 				<br>
 				these options are active:<br>
 				* Serve penalty<br>
 				* Driver change<br>
 				<br>
 				The fix options (bodywork, suspension and so on) will be ignored, even if active.<br>
+				<br>
+				The pit-stop execution will try to set all the pit-options, even if it failed with some of the options.<br>
+				If you want to manually alter any pit-menu settings, let the pit-stop execution finish (the request box button stops blinking).
 			</div>
 		</div>
 </body>

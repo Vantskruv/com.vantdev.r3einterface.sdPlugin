@@ -401,13 +401,19 @@ void FR3EData::thread_setPitOptions()
         //From the right we have, SAFE, NORMAL, RISKY, and the N liters (up to the total fuel capacity of the car)
 
         bool bSuccess = true;
+
         for (auto iPitOption : currentPitOptions)
         {
-            if (abortOnGoingPitOptions || !setPitOption(iPitOption.first, iPitOption.second, current_refuel_option)) { bSuccess = false; break; }
+            if (abortOnGoingPitOptions)
+            {
+                bSuccess = false;
+                break;
+            }
+            if(!setPitOption(iPitOption.first, iPitOption.second, current_refuel_option)) { bSuccess = false;}
             std::this_thread::sleep_for(std::chrono::milliseconds(waitBetweenEachCommands));
         }
         
-        if (bSuccess && !abortOnGoingPitOptions)
+        if (bSuccess)
         {
             if (current_request_boxthislap && r3eSharedData->pit_state <1) // Request pitstop
             {
